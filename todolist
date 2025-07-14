@@ -1,0 +1,12 @@
+Premier partie:
+-creer la base de donnees:
+        -membre (id_membre, nom , date de naissance, genre, émail, ville, mdp, image_profil)
+        -categorie_objet (id_categorie, nom_categorie )
+        -objet (id_objet , nom_objet , id_categorie, id_membre)
+        -images_objet(id_image, id_objet, nom_image)
+        -emprunt(id_emprunt, id_objet, id_membre, date_emprunt, date_retour)
+        -Insérer les données de test
+        -4  membres
+        -4 catégories ( esthétique, bricolage, mécanique , cuisine )
+        -10 objets par membre à répartir sur les catégories
+        -10 emprunts
