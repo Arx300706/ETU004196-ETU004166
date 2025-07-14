@@ -1,3 +1,4 @@
+
 Premier partie:
 -creer la base de donnees:
         -membre (id_membre, nom , date de naissance, genre, émail, ville, mdp, image_profil)
