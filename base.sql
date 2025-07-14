@@ -1,9 +1,8 @@
-DROP DATABASE IF EXISTS Examenfinal;
-CREATE DATABASE IF NOT EXISTS Examenfinal;
+CREATE DATABASE Examenfinal;
 USE Examenfinal;
 
 
-CREATE TABLE Exam_membre (
+CREATE TABLE Membre (
     id_membre INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100),
     date_naissance DATE,
@@ -14,12 +13,12 @@ CREATE TABLE Exam_membre (
     image_profil VARCHAR(255)
 );
 
-CREATE TABLE Exam_categorie_objet (
+CREATE TABLE Categorie_objet (
     id_categorie INT AUTO_INCREMENT PRIMARY KEY,
     nom_categorie VARCHAR(50)
 );
 
-CREATE TABLE Exam_objet (
+CREATE TABLE Objet (
     id_objet INT AUTO_INCREMENT PRIMARY KEY,
     nom_objet VARCHAR(100),
     id_categorie INT,
@@ -28,14 +27,14 @@ CREATE TABLE Exam_objet (
     FOREIGN KEY (id_membre) REFERENCES membre(id_membre)
 );
 
-CREATE TABLE Exam_images_objet (
+CREATE TABLE Images_objet (
     id_image INT AUTO_INCREMENT PRIMARY KEY,
     id_objet INT,
     nom_image VARCHAR(255),
     FOREIGN KEY (id_objet) REFERENCES objet(id_objet)
 );
 
-CREATE TABLE Exam_emprunt (
+CREATE TABLE Emprunt (
     id_emprunt INT AUTO_INCREMENT PRIMARY KEY,
     id_objet INT,
     id_membre INT,
@@ -47,9 +46,9 @@ CREATE TABLE Exam_emprunt (
 
 -- Insertion des membres
 INSERT INTO membre (nom, date_naissance, genre, email, ville, mdp, image_profil) VALUES
-('Alice', '1990-01-01', 'F', 'alice@email.com', 'Paris', 'pass1', 'alice.jpg'),
-('Bob', '1985-05-12', 'M', 'bob@email.com', 'Lyon', 'pass2', 'bob.jpg'),
-('Charlie', '1992-07-23', 'M', 'charlie@email.com', 'Marseille', 'pass3', 'charlie.jpg'),
+('Armando', '1990-01-01', 'M', 'armando@email.com', 'Antanimena', 'pass1', 'armando.jpg'),
+('Tiavina', '1985-05-12', 'M', 'tiavina@email.com', 'Antsirabe', 'pass2', 'tiavina.jpg'),
+('Kevin', '1992-07-23', 'M', 'kevin@email.com', 'Mandromena', 'pass3', 'kevin.jpg'),
 ('Diane', '1988-11-30', 'F', 'diane@email.com', 'Toulouse', 'pass4', 'diane.jpg');
 
 -- Insertion des catégories
@@ -61,12 +60,12 @@ INSERT INTO categorie_objet (nom_categorie) VALUES
 
 -- Insertion des objets (10 par membre, répartis sur les catégories)
 INSERT INTO objet (nom_objet, id_categorie, id_membre) VALUES
-('Objet1_Alice', 1, 1), ('Objet2_Alice', 2, 1), ('Objet3_Alice', 3, 1), ('Objet4_Alice', 4, 1), ('Objet5_Alice', 1, 1),
-('Objet6_Alice', 2, 1), ('Objet7_Alice', 3, 1), ('Objet8_Alice', 4, 1), ('Objet9_Alice', 1, 1), ('Objet10_Alice', 2, 1),
-('Objet1_Bob', 1, 2), ('Objet2_Bob', 2, 2), ('Objet3_Bob', 3, 2), ('Objet4_Bob', 4, 2), ('Objet5_Bob', 1, 2),
-('Objet6_Bob', 2, 2), ('Objet7_Bob', 3, 2), ('Objet8_Bob', 4, 2), ('Objet9_Bob', 1, 2), ('Objet10_Bob', 2, 2),
-('Objet1_Charlie', 1, 3), ('Objet2_Charlie', 2, 3), ('Objet3_Charlie', 3, 3), ('Objet4_Charlie', 4, 3), ('Objet5_Charlie', 1, 3),
-('Objet6_Charlie', 2, 3), ('Objet7_Charlie', 3, 3), ('Objet8_Charlie', 4, 3), ('Objet9_Charlie', 1, 3), ('Objet10_Charlie', 2, 3),
+('Objet1_Armando', 1, 1), ('Objet2_Armando', 2, 1), ('Objet3_Armando', 3, 1), ('Objet4_Armando', 4, 1), ('Objet5_Armando', 1, 1),
+('Objet6_Armando', 2, 1), ('Objet7_Armando', 3, 1), ('Objet8_Armando', 4, 1), ('Objet9_Armando', 1, 1), ('Objet10_Armando', 2, 1),
+('Objet1_Tiavina', 1, 2), ('Objet2_Tiavina', 2, 2), ('Objet3_Tiavina', 3, 2), ('Objet4_Tiavina', 4, 2), ('Objet5_Tiavina', 1, 2),
+('Objet6_Tiavina', 2, 2), ('Objet7_Tiavina', 3, 2), ('Objet8_Tiavina', 4, 2), ('Objet9_Tiavina', 1, 2), ('Objet10_Tiavina', 2, 2),
+('Objet1_Kevin', 1, 3), ('Objet2_Kevin', 2, 3), ('Objet3_Kevin', 3, 3), ('Objet4_Kevin', 4, 3), ('Objet5_Kevin', 1, 3),
+('Objet6_Kevin', 2, 3), ('Objet7_Kevin', 3, 3), ('Objet8_Kevin', 4, 3), ('Objet9_Kevin', 1, 3), ('Objet10_Kevin', 2, 3),
 ('Objet1_Diane', 1, 4), ('Objet2_Diane', 2, 4), ('Objet3_Diane', 3, 4), ('Objet4_Diane', 4, 4), ('Objet5_Diane', 1, 4),
 ('Objet6_Diane', 2, 4), ('Objet7_Diane', 3, 4), ('Objet8_Diane', 4, 4), ('Objet9_Diane', 1, 4), ('Objet10_Diane', 2, 4);
 
@@ -93,4 +92,3 @@ INSERT INTO emprunt (id_objet, id_membre, date_emprunt, date_retour) VALUES
 (35, 1, '2025-07-08', '2025-07-17'),
 (40, 2, '2025-07-09', '2025-07-18'),
 (12, 3, '2025-07-10', '2025-07-19');
-
