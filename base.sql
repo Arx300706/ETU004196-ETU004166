@@ -44,32 +44,33 @@ CREATE TABLE Emprunt (
     FOREIGN KEY (id_membre) REFERENCES membre(id_membre)
 );
 
--- Insertion des membres
-INSERT INTO membre (nom, date_naissance, genre, email, ville, mdp, image_profil) VALUES
-('Armando', '1990-01-01', 'M', 'armando@email.com', 'Antanimena', 'pass1', 'armando.jpg'),
-('Tiavina', '1985-05-12', 'M', 'tiavina@email.com', 'Antsirabe', 'pass2', 'tiavina.jpg'),
-('Kevin', '1992-07-23', 'M', 'kevin@email.com', 'Mandromena', 'pass3', 'kevin.jpg'),
+CREATE TABLE Profil (
+    id_profil INT AUTO_INCREMENT PRIMARY KEY,
+    id_membre INT,
+    bio TEXT,
+    telephone VARCHAR(20),
+    adresse VARCHAR(255),
+    FOREIGN KEY (id_membre) REFERENCES membre(id_membre)
+);
+
+INSERT INTO membre (nom, date_naissance, genre, gmail, ville, mdp, image_profil) VALUES
+('Armando', '2006-07-30', 'M', 'armando@email.com', 'Antanimena', 'pass1', 'armando.jpg'),
+('Tiavina', '2006-06-18', 'M', 'tiavina@email.com', 'Antsirabe', 'pass2', 'tiavina.jpg'),
+('Kevin', '2006-06-18', 'M', 'kevin@email.com', 'Mandromena', 'pass3', 'kevin.jpg'),
 ('Diane', '1988-11-30', 'F', 'diane@email.com', 'Toulouse', 'pass4', 'diane.jpg');
 
--- Insertion des catégories
 INSERT INTO categorie_objet (nom_categorie) VALUES
-('esthétique'),
+('esthetique'),
 ('bricolage'),
-('mécanique'),
+('mecanique'),
 ('cuisine');
 
--- Insertion des objets (10 par membre, répartis sur les catégories)
 INSERT INTO objet (nom_objet, id_categorie, id_membre) VALUES
-('Objet1_Armando', 1, 1), ('Objet2_Armando', 2, 1), ('Objet3_Armando', 3, 1), ('Objet4_Armando', 4, 1), ('Objet5_Armando', 1, 1),
-('Objet6_Armando', 2, 1), ('Objet7_Armando', 3, 1), ('Objet8_Armando', 4, 1), ('Objet9_Armando', 1, 1), ('Objet10_Armando', 2, 1),
-('Objet1_Tiavina', 1, 2), ('Objet2_Tiavina', 2, 2), ('Objet3_Tiavina', 3, 2), ('Objet4_Tiavina', 4, 2), ('Objet5_Tiavina', 1, 2),
-('Objet6_Tiavina', 2, 2), ('Objet7_Tiavina', 3, 2), ('Objet8_Tiavina', 4, 2), ('Objet9_Tiavina', 1, 2), ('Objet10_Tiavina', 2, 2),
-('Objet1_Kevin', 1, 3), ('Objet2_Kevin', 2, 3), ('Objet3_Kevin', 3, 3), ('Objet4_Kevin', 4, 3), ('Objet5_Kevin', 1, 3),
-('Objet6_Kevin', 2, 3), ('Objet7_Kevin', 3, 3), ('Objet8_Kevin', 4, 3), ('Objet9_Kevin', 1, 3), ('Objet10_Kevin', 2, 3),
-('Objet1_Diane', 1, 4), ('Objet2_Diane', 2, 4), ('Objet3_Diane', 3, 4), ('Objet4_Diane', 4, 4), ('Objet5_Diane', 1, 4),
-('Objet6_Diane', 2, 4), ('Objet7_Diane', 3, 4), ('Objet8_Diane', 4, 4), ('Objet9_Diane', 1, 4), ('Objet10_Diane', 2, 4);
+('Appartement Armando', 1, 1), ('Maison Armando', 2, 1), ('Studio Armando', 3, 1), ('Villa Armando', 4, 1), ('Garage Armando', 1, 1),
+('Appartement Tiavina', 1, 2), ('Maison Tiavina', 2, 2), ('Studio Tiavina', 3, 2), ('Villa Tiavina', 4, 2), ('Garage Tiavina', 1, 2),
+('Appartement Kevin', 1, 3), ('Maison Kevin', 2, 3), ('Studio Kevin', 3, 3), ('Villa Kevin', 4, 3), ('Garage Kevin', 1, 3),
+('Appartement Diane', 1, 4), ('Maison Diane', 2, 4), ('Studio Diane', 3, 4), ('Villa Diane', 4, 4), ('Garage Diane', 1, 4);
 
--- Insertion des images_objet (1 image par objet)
 INSERT INTO images_objet (id_objet, nom_image) VALUES
 (1, 'img1.jpg'), (2, 'img2.jpg'), (3, 'img3.jpg'), (4, 'img4.jpg'), (5, 'img5.jpg'),
 (6, 'img6.jpg'), (7, 'img7.jpg'), (8, 'img8.jpg'), (9, 'img9.jpg'), (10, 'img10.jpg'),
@@ -80,15 +81,15 @@ INSERT INTO images_objet (id_objet, nom_image) VALUES
 (31, 'img31.jpg'), (32, 'img32.jpg'), (33, 'img33.jpg'), (34, 'img34.jpg'), (35, 'img35.jpg'),
 (36, 'img36.jpg'), (37, 'img37.jpg'), (38, 'img38.jpg'), (39, 'img39.jpg'), (40, 'img40.jpg');
 
--- Insertion des emprunts (10 emprunts)
 INSERT INTO emprunt (id_objet, id_membre, date_emprunt, date_retour) VALUES
 (1, 2, '2025-07-01', '2025-07-10'),
-(5, 3, '2025-07-02', '2025-07-11'),
-(10, 4, '2025-07-03', '2025-07-12'),
-(15, 1, '2025-07-04', '2025-07-13'),
-(20, 2, '2025-07-05', '2025-07-14'),
-(25, 3, '2025-07-06', '2025-07-15'),
-(30, 4, '2025-07-07', '2025-07-16'),
-(35, 1, '2025-07-08', '2025-07-17'),
-(40, 2, '2025-07-09', '2025-07-18'),
-(12, 3, '2025-07-10', '2025-07-19');
+(2, 3, '2025-07-02', '2025-07-11'),
+(3, 4, '2025-07-03', '2025-07-12'),
+(4, 1, '2025-07-04', '2025-07-13'),
+(5, 2, '2025-07-05', '2025-07-14'),
+(6, 3, '2025-07-06', '2025-07-15'),
+(7, 4, '2025-07-07', '2025-07-16'),
+(8, 1, '2025-07-08', '2025-07-17'),
+(9, 2, '2025-07-09', '2025-07-18'),
+(10, 3, '2025-07-10', '2025-07-19');
+
