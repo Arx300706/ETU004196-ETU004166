@@ -10,3 +10,18 @@ Premier partie:
         -4 catégories ( esthétique, bricolage, mécanique , cuisine )
         -10 objets par membre à répartir sur les catégories
         -10 emprunts
+
+deuxieme partie
+-Amelioration du designe
+-ajouter des  upload d’image par un membre
+-on peut avoir plusieurs images, mais la 1ère image sera l’image principale à afficher sur la liste des objets)
+-on peut supprimer les images
+-s’il n’y a pas d’images, mettre une image par défaut
+-Lorsqu’on clique sur un objet dans la liste, afficher la fiche de l’objet (image principale + autres images) avec -l’historique des emprunts
+-mettre les critères de recherche suivant sur la liste des objets
+-catégorie (zone de liste)
+-nom de l’objet 
+-case à cocher disponible
+-dans la fiche membre, mettre les infos du membre, ainsi que les objets du membre regroupés par catégorie
+
+Troisieme partie

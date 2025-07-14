@@ -5,13 +5,17 @@ if (!isset($_SESSION['id_membre'])) {
     exit();
 }
 
-
-$mysqli = new mysqli('localhost', 'root', '', 'Examenfinal');
-if ($mysqli->connect_errno) {
-    die('Erreur de connexion à la base de données : ' . $mysqli->connect_error);
-}
+require_once '../inc/connexion.php';
 
 $id_membre = $_SESSION['id_membre'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profil_image']) && !empty($_FILES['profil_image']['name'])) {
+    $file = $_FILES['profil_image'];
+    $name = basename($file['name']);
+    $target = '../assets/images/' . $name;
+    if (move_uploaded_file($file['tmp_name'], $target)) {
+        $mysqli->query("UPDATE membre SET image_profil = '" . $mysqli->real_escape_string($name) . "' WHERE id_membre = $id_membre");
+    }
+}
 $sql_membre = "SELECT * FROM membre WHERE id_membre = $id_membre";
 $result_membre = $mysqli->query($sql_membre);
 $membre = $result_membre ? $result_membre->fetch_assoc() : null;
@@ -64,6 +68,11 @@ if ($result_objets) {
         .main-content {
             margin-top: 80px;
         }
+        .immobilier-card:hover {
+            box-shadow: 0 0 16px #19875455;
+            transform: translateY(-4px) scale(1.02);
+            transition: all 0.2s;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -72,41 +81,51 @@ if ($result_objets) {
         <div class="d-flex align-items-center">
             <img src="../assets/images/<?= htmlspecialchars($membre['image_profil']) ?>" alt="Photo de profil" class="profil-img shadow">
             <span class="profil-nom ms-2"><?= htmlspecialchars($membre['nom']) ?></span>
+            <form method="post" enctype="multipart/form-data" class="d-inline ms-3">
+                <input type="file" name="profil_image" accept="image/*" style="display:none;" id="profil_image_input" onchange="this.form.submit()">
+                <label for="profil_image_input" class="btn btn-outline-success btn-sm mb-0">Changer photo</label>
+            </form>
         </div>
         <a href="logout.php" class="btn btn-outline-danger btn-sm">Déconnexion</a>
     </div>
 <?php endif; ?>
 <div class="container main-content">
-    <div class="card mb-4 shadow-sm">
+    <div class="card mb-4 shadow-lg border-success">
         <div class="card-body d-flex flex-column align-items-center justify-content-center">
             <?php if ($membre): ?>
-                <h3 class="card-title mb-3 fw-bold text-success" style="font-size: 2rem; margin-top: 1rem;">Profil</h3>
-                <p><strong>Email :</strong> <?= htmlspecialchars($membre['email']) ?></p>
-                <p><strong>Ville :</strong> <?= htmlspecialchars($membre['ville']) ?></p>
+                <h3 class="card-title mb-3 fw-bold text-success" style="font-size: 2rem; margin-top: 1rem;"><i class="bi bi-person-circle"></i> Profil</h3>
+                <p class="mb-1"><strong>Email :</strong> <span class="text-primary"><?= htmlspecialchars($membre['email']) ?></span></p>
+                <p class="mb-1"><strong>Ville :</strong> <span class="text-secondary"><?= htmlspecialchars($membre['ville']) ?></span></p>
             <?php endif; ?>
         </div>
     </div>
-    <div class="card shadow-sm">
+    <div class="card shadow-lg border-info">
         <div class="card-body">
-            <h4 class="card-title">Objets disponibles à emprunter</h4>
-            <div class="row">
+            <h4 class="card-title mb-4 text-info"><i class="bi bi-house-door"></i> Biens immobiliers disponibles à emprunter</h4>
+            <div class="row g-4">
             <?php foreach ($objets as $objet): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm position-relative immobilier-card">
                         <?php
-                        // Récupérer la photo de l'objet
                         $img_result = $mysqli->query("SELECT nom_image FROM images_objet WHERE id_objet = " . intval($objet['id_objet']) . " LIMIT 1");
                         $img = $img_result && $img_result->num_rows ? $img_result->fetch_assoc()['nom_image'] : 'default.jpg';
+                        $prop_result = $mysqli->query("SELECT nom FROM membre WHERE id_membre = " . intval($objet['id_membre']) . " LIMIT 1");
+                        $proprietaire = $prop_result && $prop_result->num_rows ? $prop_result->fetch_assoc()['nom'] : 'Inconnu';
+                        $retour_result = $mysqli->query("SELECT date_retour FROM emprunt WHERE id_objet = " . intval($objet['id_objet']) . " ORDER BY date_retour DESC LIMIT 1");
+                        $date_retour = $retour_result && $retour_result->num_rows ? $retour_result->fetch_assoc()['date_retour'] : null;
                         ?>
-                        <img src="../assets/images/<?= htmlspecialchars($img) ?>" class="card-img-top" alt="Photo objet" style="height:180px;object-fit:cover;">
+                        <img src="../assets/images/<?= htmlspecialchars($img) ?>" class="card-img-top rounded-top" alt="Photo bien" style="height:180px;object-fit:cover;">
                         <div class="card-body text-center">
-                            <h5 class="card-title text-success"><?= htmlspecialchars($objet['nom_objet']) ?></h5>
-                            <p class="card-text"><span class="badge bg-secondary"><?= htmlspecialchars($objet['nom_categorie']) ?></span></p>
+                            <h5 class="card-title text-success mb-2"><i class="bi bi-building"></i> <?= htmlspecialchars($objet['nom_objet']) ?></h5>
+                            <span class="badge bg-primary mb-2">Propriétaire : <?= htmlspecialchars($proprietaire) ?></span>
+                            <p class="card-text mb-2"><span class="badge bg-secondary">Catégorie : <?= htmlspecialchars($objet['nom_categorie']) ?></span></p>
+                            <p class="mb-2"><i class="bi bi-calendar-check"></i> Date de retour : <span class="text-danger"><?= $date_retour ? htmlspecialchars($date_retour) : 'Disponible' ?></span></p>
                             <form method="post" action="emprunter.php">
                                 <input type="hidden" name="id_objet" value="<?= $objet['id_objet'] ?>">
-                                <button type="submit" class="btn btn-primary btn-sm">Emprunter</button>
+                                <button type="submit" class="btn btn-outline-success btn-sm w-100"><i class="bi bi-box-arrow-in-right"></i> Emprunter</button>
                             </form>
                         </div>
+                        <a href="fiche_objet.php?id_objet=<?= $objet['id_objet'] ?>" class="stretched-link"></a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -114,5 +133,7 @@ if ($result_objets) {
         </div>
     </div>
 </div>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </body>
 </html>

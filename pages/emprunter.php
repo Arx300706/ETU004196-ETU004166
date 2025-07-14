@@ -15,9 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_objet'])) {
     if ($mysqli->connect_errno) {
         die('Erreur de connexion à la base de données : ' . $mysqli->connect_error);
     }
-    
 
-    // Vérifier si l'objet est déjà emprunté
     $verif = $mysqli->query("SELECT * FROM emprunt WHERE id_objet = $id_objet AND date_retour > CURDATE()");
     if ($verif && $verif->num_rows > 0) {
         $message = "Cet objet est déjà emprunté.";

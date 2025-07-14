@@ -3,12 +3,7 @@ session_start();
 $erreur = '';
 $success = '';
 
-// Connexion à la base
-$mysqli = new mysqli('localhost', 'root', '', 'Examenfinal');
-if ($mysqli->connect_errno) {
-    die('Erreur de connexion à la base de données : ' . $mysqli->connect_error);
-}
-
+require_once '../inc/connexion.php';
 
 if (isset($_POST['login'])) {
     $email = $_POST['email_login'];
@@ -25,13 +20,12 @@ if (isset($_POST['login'])) {
     }
 }
 
-
 if (isset($_POST['register'])) {
     $nom = $_POST['nom'];
     $email = $_POST['email'];
     $mdp = $_POST['mdp'];
     $ville = $_POST['ville'];
-    $image = 'default.jpg'; // image par défaut
+    $image = 'default.jpg';
     $sql = "INSERT INTO membre (nom, date_naissance, genre, email, ville, mdp, image_profil) VALUES ('" .
         $mysqli->real_escape_string($nom) . "', '2000-01-01', 'M', '" . $mysqli->real_escape_string($email) . "', '" . $mysqli->real_escape_string($ville) . "', '" . $mysqli->real_escape_string($mdp) . "', '" . $mysqli->real_escape_string($image) . "')" ;
     if ($mysqli->query($sql)) {
@@ -41,7 +35,6 @@ if (isset($_POST['register'])) {
     }
 }
 
-// Liste des objets disponibles à emprunter
 $sql_objets = "SELECT objet.*, categorie_objet.nom_categorie
     FROM objet
     JOIN categorie_objet ON objet.id_categorie = categorie_objet.id_categorie
@@ -150,7 +143,6 @@ if ($result_objets) {
         </div>
     </div>
 </div>
-<!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </body>
 </html>
