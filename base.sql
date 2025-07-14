@@ -93,3 +93,4 @@ INSERT INTO emprunt (id_objet, id_membre, date_emprunt, date_retour) VALUES
 (9, 2, '2025-07-09', '2025-07-18'),
 (10, 3, '2025-07-10', '2025-07-19');
 
+

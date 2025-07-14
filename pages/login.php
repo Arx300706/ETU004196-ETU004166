@@ -9,7 +9,7 @@ if ($mysqli->connect_errno) {
     die('Erreur de connexion à la base de données : ' . $mysqli->connect_error);
 }
 
-// Traitement du formulaire de connexion
+
 if (isset($_POST['login'])) {
     $email = $_POST['email_login'];
     $mdp = $_POST['mdp_login'];
@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
     }
 }
 
-// Traitement du formulaire d'inscription
+
 if (isset($_POST['register'])) {
     $nom = $_POST['nom'];
     $email = $_POST['email'];

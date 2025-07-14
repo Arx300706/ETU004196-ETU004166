@@ -69,6 +69,7 @@ if ($result_objets) {
         <?php endforeach; ?>
         </tbody>
     </table>
+    
 </div>
 </body>
 </html>
